@@ -12,4 +12,4 @@ In this project I consume the following endpoint in which I obtain all the chara
 
 Rick and Morty endpoint: https://rickandmortyapi.com/documentation/#get-all-characters
 
-URL DEPLOY: 
+URL DEPLOY: https://morty-app.netlify.app/
