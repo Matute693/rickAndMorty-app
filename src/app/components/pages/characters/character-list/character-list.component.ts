@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, ParamMap, Params, Router } from '@angular/router';
 import { filter, take } from 'rxjs';
 import { CharacterService } from '@app/shared/services/character.service';
 import { Character } from '@shared/interface/character.interface';
@@ -46,7 +46,7 @@ export class CharacterListComponent implements OnInit {
   }
 
   private getCharactersByQuery(): void {
-    this.route.queryParams.pipe(take(1)).subscribe((params: any) => {
+    this.route.queryParams.pipe(take(1)).subscribe((params: Params) => {
       this.query = params['q'];
       this.getDataFromService();
     });

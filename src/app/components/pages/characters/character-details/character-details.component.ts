@@ -18,7 +18,6 @@ export class CharacterDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private characterService: CharacterService,
     private location: Location,
-    private window: Window
   ) { }
 
   ngOnInit(): void {
@@ -29,8 +28,8 @@ export class CharacterDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    // this.location.back();
-    this.window.history.back();
+    this.location.back();
+    // window.history.back();
   }
 
 }
