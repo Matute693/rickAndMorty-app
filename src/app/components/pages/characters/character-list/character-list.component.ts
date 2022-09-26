@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, ParamMap, Params, Router } from '@angular/router';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 import { filter, take } from 'rxjs';
 import { CharacterService } from '@app/shared/services/character.service';
 import { Character } from '@shared/interface/character.interface';
@@ -23,8 +24,10 @@ export class CharacterListComponent implements OnInit {
   private query: string;
   private hideScrollHeight: number = 200;
   private showScrollHeight: number = 500;
+  public showGoUpButton: boolean = false;
 
   constructor( 
+    @Inject(DOCUMENT) private document: Document,
     private characterService: CharacterService,
     private route: ActivatedRoute,
     private router: Router) {
@@ -33,6 +36,31 @@ export class CharacterListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCharactersByQuery();
+  }
+  //@hostListener: Decorador que declara un evento DOM para escuchar y proporciona 
+  //un metodo de controlador para ejecutarse cuando se produce el evento
+  @HostListener('window:scroll', [])
+  onWindowScroll(): void {
+    const yOffSet = window.scrollY;
+    if(yOffSet || this.document.documentElement.scrollTop 
+      || this.document.body.scrollTop > this.showScrollHeight) {
+        this.showGoUpButton = true;
+      } else if (this.showGoUpButton 
+        && (yOffSet || this.document.documentElement.scrollTop || this.document.body.scrollTop) < this.hideScrollHeight) {
+          this.showGoUpButton = false;
+        }
+  }
+
+  onScrollDown(): void {
+    if(this.info.next) {
+      this.pageNum++;
+      this.getDataFromService();
+    }
+  }
+
+  onScrollTop(): void {
+    this.document.body.scrollTop = 0; // Safari
+    this.document.documentElement.scrollTop = 0; // Resto de navegadores
   }
 
   private onUrlChanged(): void {
